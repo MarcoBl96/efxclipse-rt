@@ -56,7 +56,9 @@ public abstract class BaseToolBarRenderer<N> extends BaseItemContainerRenderer<M
 	public void doProcessContent(MToolBar element) {
 		WToolBar<N> toolbar = getWidget(element);
 		if( toolbar == null ) {
-			getLogger().error("Could not find widget for '"+element+"'");  //$NON-NLS-1$//$NON-NLS-2$
+			if(element.isToBeRendered()) {
+				getLogger().error("Could not find widget for '"+element+"'");  //$NON-NLS-1$//$NON-NLS-2$
+			}
 			return;
 		}
 		for (MToolBarElement item : element.getChildren()) {
@@ -77,7 +79,9 @@ public abstract class BaseToolBarRenderer<N> extends BaseItemContainerRenderer<M
 
 		WToolBar<N> toolbar = getWidget(parentElement);
 		if( toolbar == null ) {
-			getLogger().error("Could not find widget for '"+parentElement+"'"); //$NON-NLS-1$ //$NON-NLS-2$
+			if (parentElement.isToBeRendered()) {
+				getLogger().error("Could not find widget for '" + parentElement + "'"); //$NON-NLS-1$ //$NON-NLS-2$
+			}
 			return;
 		}
 		int idx = getRenderedIndex(parentElement, element);
@@ -85,7 +89,7 @@ public abstract class BaseToolBarRenderer<N> extends BaseItemContainerRenderer<M
 		WWidget<MToolBarElement> widget = (WWidget<MToolBarElement>) element.getWidget();
 		if( widget != null ) {
 			toolbar.addChild(idx, widget);	
-		} else {
+		} else if (element.isToBeRendered()) {
 			this.logger.error("The widget for element '"+element+"' should not be null.");  //$NON-NLS-1$//$NON-NLS-2$
 		}
 		
